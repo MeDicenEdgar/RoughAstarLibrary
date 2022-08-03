@@ -1,4 +1,3 @@
-import math
 from queue import PriorityQueue
 
 CLEAR = " "
@@ -143,47 +142,28 @@ def printGrid(grid, rows):
     for row in range(len(graphGrid)):
         print(graphGrid[row])
 
+def findPath(rows, selectedRowStart, selectedColumnStart, selectedRowEnd, selectedColumnEnd, grid = None):
+    if grid == None:
+        grid = makeGrid(rows)
+    start = None
+    end = None
+    loop = True
+    while loop:
+        if (selectedRowStart != selectedRowEnd) or (selectedColumnEnd != selectedColumnStart):
+            usedCoordinates = {(selectedRowStart, selectedColumnStart), (selectedRowEnd, selectedColumnEnd)}
+            print(usedCoordinates)
+            break
+        else:
+            print("The coordinates must not be the same")
+            continue
 
+    usedCoordinates = {(selectedRowStart, selectedRowEnd), ()}
+        
+    for row in grid:
+        for node in row:
+            node.updateNeighbors(grid)
 
-rows = int(input("Introduce the number of rows you want in the algorithm:\n")) #Con esto podemos definir cuantas filas y columnas queremos
-grid = makeGrid(rows) #Llamamos la funcon makegrid para hacer una representacion de nuestra tabla con listas
-start = None
-end = None
-loop = True
-while loop:
-    selectedRowStart = int(input("Introduce the row of the beginning node:\n")) - 1
-    selectedColumnStart = int(input("Introduce the column of the beginning node:\n")) - 1
-    selectedRowEnd = int(input("Introduce the column of the beginning node:\n")) - 1
-    selectedColumnEnd = int(input("Introduce the column of the end node:\n")) - 1
-    if (selectedRowStart != selectedRowEnd) or (selectedColumnEnd != selectedColumnStart):
-        usedCoordinates = {(selectedRowStart, selectedColumnStart), (selectedRowEnd, selectedColumnEnd)}
-        print(usedCoordinates)
-        break
-    else:
-        print("The coordinates must not be the same")
-        continue
-
-usedCoordinates = {(selectedRowStart, selectedRowEnd), ()}
-
-for i in range(rows*rows-2):
-    selectedRowBarrier = int(input("Introduce the row of the barrier no.{}\nIf you want to stop placing barriers, type 0:\n".format(i)))
-    if selectedRowBarrier == 0:
-        break
-    selectedColumnBarrier = int(input("Introduce the column of the barrier no.{}\nIf you want to stop placing barriers, type 0:\n".format(i)))
-    if selectedColumnBarrier == 0:
-        break
-    if (selectedRowBarrier, selectedColumnBarrier) in usedCoordinates:
-        print("Those coordinates are already in use")
-        continue
-    usedCoordinates.add((selectedRowBarrier, selectedColumnBarrier))
-    grid[selectedRowBarrier][selectedColumnBarrier].makeBarrier()
-    
-for row in grid:
-    for node in row:
-        node.updateNeighbors(grid)
-
-start = grid[selectedRowStart][selectedColumnStart]
-end = grid[selectedRowEnd][selectedColumnEnd]
-algorithm(grid, start, end)
-printGrid(grid, rows) 
-
+    start = grid[selectedRowStart][selectedColumnStart]
+    end = grid[selectedRowEnd][selectedColumnEnd]
+    algorithm(grid, start, end)
+    printGrid(grid, rows) 
